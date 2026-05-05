@@ -15,10 +15,10 @@ import { Plus } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div>
+    <div className="">
       <div className="">
         <form action="">
-          <Card className="max-w-[400px] mx-auto mt-6">
+          <Card className="max-w-[400px] mx-auto mt-6  ">
             <CardHeader>
               <CardTitle>Adicionar Louvor</CardTitle>
               <CardDescription>
@@ -43,7 +43,7 @@ export default function Home() {
             <CardFooter>
               <Button
                 size={'lg'}
-                className="w-full cursor-pointer"
+                className="w-full cursor-pointer bg-green-500 hover:bg-green-400 px-5 py-2 rounded-xl transition text-black font-bold text-lg"
                 type="submit"
               >
                 Adicionar

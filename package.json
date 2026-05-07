@@ -1,5 +1,8 @@
 {
-	"dependencies": {
-		"pg": "^8.20.0"
-	}
+  "private": true,
+  "name": "kairos",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build"
+  }
 }

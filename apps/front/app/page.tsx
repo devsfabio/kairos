@@ -13,11 +13,22 @@ import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Plus } from 'lucide-react';
 
+import { useSong } from './_hooks/use-song';
+
+import { useForm, SubmitHandler } from 'react-hook-form';
+
 export default function Home() {
+  // const { mutate } = useSong();
+
   return (
     <div className="">
       <div className="">
-        <form action="">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log(e);
+          }}
+        >
           <Card className="max-w-[400px] mx-auto mt-6  ">
             <CardHeader>
               <CardTitle>Adicionar Louvor</CardTitle>

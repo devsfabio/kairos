@@ -2,7 +2,7 @@ import { submitSong } from '@/services/songs.service';
 import { useMutation } from '@tanstack/react-query';
 
 export function useSong() {
-  useMutation({
+  return useMutation({
     mutationFn: submitSong,
   });
 }

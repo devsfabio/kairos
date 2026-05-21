@@ -8,8 +8,10 @@ export async function submitSong(songBody: SongBody) {
     },
     body: JSON.stringify(songBody),
   });
+
   if (!response.ok) {
     throw new Error('Failed to submit song');
   }
-  return response.json();
+  
+  return null;
 }

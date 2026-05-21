@@ -1,33 +1,54 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Plus } from 'lucide-react';
-
 import { useSong } from './_hooks/use-song';
-
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from 'react-hook-form';
+import { SongBody, SongBodySchema } from '@kairos/contracts';
+import { useCallback, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Home() {
-  // const { mutate } = useSong();
+  const { mutate } = useSong();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const { handleSubmit, register, formState } = useForm<SongBody>({
+    resolver: zodResolver(SongBodySchema),
+    shouldFocusError: true,
+    mode: "onBlur",
+    reValidateMode: "onChange",
+  });
+
+  const saveSong = useCallback((data: SongBody) => {
+    setLoading(true)
+
+    mutate(data, {
+      onSuccess: () => {
+        toast("Louvor salvo com sucesso 😍")
+        setLoading(false)
+      },
+      onError: () => {
+        toast("Estamos com problemas 🫤 Por favor, tente novamente mais tarde")
+        setLoading(false)
+      }
+    })
+  }, [])
 
   return (
     <div className="">
       <div className="">
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log(e);
-          }}
+          onSubmit={handleSubmit(saveSong)}
         >
           <Card className="max-w-[400px] mx-auto mt-6  ">
             <CardHeader>
@@ -40,15 +61,24 @@ export default function Home() {
             <CardContent className="space-y-5">
               <Field>
                 <FieldLabel htmlFor="">Artista</FieldLabel>
-                <Input />
+                <Input
+                  {...register('artist')}
+                />
+                {formState.errors.artist && <FieldError>{formState.errors.artist.message}</FieldError>}
               </Field>
               <Field>
                 <FieldLabel htmlFor="">Louvor</FieldLabel>
-                <Input />
+                <Input
+                  {...register('title')}
+                />
+                {formState.errors.title && <FieldError>{formState.errors.title.message}</FieldError>}
               </Field>
               <Field>
                 <FieldLabel htmlFor="">URL do Youtube</FieldLabel>
-                <Input />
+                <Input
+                  {...register('url')}
+                />
+                {formState.errors.url && <FieldError>{formState.errors.url.message}</FieldError>}
               </Field>
             </CardContent>
             <CardFooter>
@@ -57,7 +87,7 @@ export default function Home() {
                 className="w-full cursor-pointer bg-green-500 hover:bg-green-400 px-5 py-2 rounded-xl transition text-black font-bold text-lg"
                 type="submit"
               >
-                Adicionar
+                {loading ? 'Salvando...' : 'Adicionar'}
               </Button>
             </CardFooter>
           </Card>
